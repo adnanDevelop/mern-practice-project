@@ -9,7 +9,9 @@ Model act as higher level abstraction that interact with database based on the d
 */
 
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
+// USER SCHEMA
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -29,6 +31,25 @@ const userSchema = new mongoose.Schema({
   },
   isAdmin: { type: Boolean, default: false },
 });
+
+// HASING THE PASSWORD
+userSchema.pre("save", async function (next) {
+  const user = this;
+
+  if (!user.isModified("password")) {
+    next();
+  }
+
+  try {
+    const saltRound = await bcrypt.genSalt(10);
+    const hash_password = await bcrypt.hash(user.password, saltRound);
+    user.password = hash_password;
+  } catch (error) {
+    next(error);
+  }
+});
+
+// JSON WEBTOKENS
 
 const User = new mongoose.model("User", userSchema);
 module.exports = User;
