@@ -1,19 +1,18 @@
 const User = require("../models/user-model");
-/*
-What is controller?
-In express.js controller are the part of our code that is responsible for handling application logic. Controllers are typically used to process incomming request, interact with  models and sent responses back to the client. They help to organize our application by separating concerns and following the mvc (Model-View_controller) design system
-*/
+const bcrypt = require("bcrypt");
 
-// HOME ROUTE
+/****** HOME ROUTE ********/
 const home = async (req, res) => {
   try {
-    res.status(200).json({ message: "Home page" });
+    const user = await User.find({});
+    console.log(user);
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json("Page not found");
   }
 };
 
-// REGISTER ROUTE
+/****** REGISTER ROUTE  ********/
 const register = async (req, res) => {
   try {
     const { username, email, phone, password } = req.body;
@@ -36,29 +35,46 @@ const register = async (req, res) => {
       password,
     });
 
-    res
-      .status(201)
-      .json({ message: userCreated, token: await userCreated.generateToken() });
+    res.status(201).json({
+      message: "Registration successfull",
+      token: await userCreated.generateToken(),
+      userId: userCreated._id.toString(),
+    });
   } catch (error) {
     res.status(400).json("Page not found");
   }
 };
 
-module.exports = { home, register };
+/******  LOGIN ROUTE ********/
+const login = async (req, res) => {
+  const { email, password } = req.body;
 
-/*
- What is JWT?
+  try {
+    const userData = await User.findOne({ email });
 
--> JWT is an open standard that define a compact and self contained way for securely transmitting the information between parties as json object.
--> JWT are used for authentication and authorization in web application.
--> Authentication: Verifing the identity of a user.
--> Authorization: Determining what actions a user is allowed to perform.
+    // IS USER EMAIL EXIST OR NOT
+    if (!userData) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-    COMPONENTS OF JWT:
-=> Header : It contains the metadata about the token such as the type of token and signing algorithm.
-=> Payload : Contains the claims, which are statements about an entity (typically the user) and additional data.
-=> Signature : Used to verify that the sender of the JWT is who it says it is and to ensure that the message wasn't changed along the way.
+    // COMPARING PASSWORD
+    // const isPasswordValid = await bcrypt.compare(password, userData.password);
+    const isPasswordValid = await userData.comparePassword(password);
 
-  IMPORTANT NOTE
-  Tokens are typically not stored in the database with user details. Instead they are issued by the server during authentication and then stored in the client side such as (local storage or cookies).
- */
+    if (isPasswordValid) {
+      // Only one response should be sent here
+      const token = await userData.generateToken();
+      res.status(201).json({
+        message: "Login successfull",
+        token,
+        userId: userData._id.toString(),
+      });
+    } else {
+      res.status(401).json("Invalid email or password");
+    }
+  } catch (error) {
+    res.status(500).json("Internal server error");
+  }
+};
+
+module.exports = { home, register, login };

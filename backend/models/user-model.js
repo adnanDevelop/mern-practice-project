@@ -1,15 +1,6 @@
-/*
-WHAT IS SCHEMA?
-SCHEMA DEFINE THE STRUCTURE OF DOCUMENTS WITHIN A COLLECTIONS. IT SPECIFIES THE FIELDS, THEIR TYPES AND ANY ADDITIONAL VALIDATIONS.
-*/
-
-/*
-What is Model?
-Model act as higher level abstraction that interact with database based on the defined schema. It represent a collecion and provides and interface for creating , updating and deleting documents in that collection. Model are created from schema and enable you to work with mongodb data in a more structured manner in our application.
-*/
-
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // USER SCHEMA
 const userSchema = new mongoose.Schema({
@@ -49,7 +40,29 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+// COMPARE PASSWORD METHOD
+userSchema.methods.comparePassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
 // JSON WEBTOKENS
+userSchema.methods.generateToken = async function () {
+  try {
+    return jwt.sign(
+      {
+        username: this._id.toString(),
+        email: this.email,
+        isAdmin: this.isAdmin,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "30d",
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const User = new mongoose.model("User", userSchema);
 module.exports = User;
