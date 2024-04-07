@@ -1,5 +1,4 @@
 const User = require("../models/user-model");
-const bcrypt = require("bcrypt");
 
 /****** HOME ROUTE ********/
 const home = async (req, res) => {
@@ -13,7 +12,7 @@ const home = async (req, res) => {
 };
 
 /****** REGISTER ROUTE  ********/
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const { username, email, phone, password } = req.body;
     const userExist = await User.findOne({ email });
@@ -41,12 +40,13 @@ const register = async (req, res) => {
       userId: userCreated._id.toString(),
     });
   } catch (error) {
-    res.status(400).json("Page not found");
+    // res.status(400).json("Page not found");
+    next(error);
   }
 };
 
 /******  LOGIN ROUTE ********/
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
@@ -73,7 +73,8 @@ const login = async (req, res) => {
       res.status(401).json("Invalid email or password");
     }
   } catch (error) {
-    res.status(500).json("Internal server error");
+    // res.status(500).json("Internal server error");
+    next(error);
   }
 };
 
