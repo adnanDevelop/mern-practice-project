@@ -8,7 +8,7 @@ const Navbar = () => {
         <div className="font-bold uppercase logo_section text-[25px]">
           Adnan <span className="text-purple-500"> Tech</span>
         </div>
-        <ul className="flex gap-4 uppercase nav_link">
+        <ul className="flex uppercase gap-x-5 nav_link">
           <li className="list-none">
             <Link
               className="font-medium transition duration-300 hover:text-purple-500 focus:text-purple-500"

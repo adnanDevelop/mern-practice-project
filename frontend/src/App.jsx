@@ -7,6 +7,7 @@ import SignupPage from "./page/SignupPage";
 import ContactPage from "./page/ContactPage";
 import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
+import ErrorPage from "./page/ErrorPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

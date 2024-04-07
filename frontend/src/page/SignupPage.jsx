@@ -1,11 +1,29 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+
+    try {
+      const response = await fetch(`http://localhost:4000/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      reset();
+      navigate("/login");
+      console.log(response);
+    } catch (error) {
+      console.log("Error at registration page", error);
+    }
   };
 
   return (
