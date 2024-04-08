@@ -8,6 +8,7 @@ import ContactPage from "./page/ContactPage";
 import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
 import ErrorPage from "./page/ErrorPage";
+import { LogoutPage } from "./page/LogoutPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/logout" element={<LogoutPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
         <Footer />

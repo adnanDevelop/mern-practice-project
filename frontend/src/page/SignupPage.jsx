@@ -1,10 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../store/auth";
 
 const SignupPage = () => {
-  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const { storeToken } = useAuthContext();
+  const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -18,9 +20,11 @@ const SignupPage = () => {
         body: JSON.stringify(data),
       });
 
+      const userData = await response.json();
+
       reset();
       navigate("/login");
-      console.log(response);
+      storeToken(userData.token); //STORING USER TOKEN IN LOCAL STORAGE
     } catch (error) {
       console.log("Error at registration page", error);
     }

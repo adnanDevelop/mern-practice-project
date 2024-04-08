@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../store/auth";
 
 const Navbar = () => {
+  const { isLogedIn } = useAuthContext();
+  console.log(isLogedIn);
+
   return (
     <header className="bg-white">
       <nav className="flex items-center justify-between container mx-auto w-full h-[60px]  text-black">
@@ -35,28 +39,41 @@ const Navbar = () => {
           </li>
           <li className="list-none">
             <Link
-              className="font-medium transition duration-300 hover:text-purple-500 focus:text-purple-500"
-              to="/Login"
-            >
-              Login
-            </Link>
-          </li>
-          <li className="list-none">
-            <Link
-              className="font-medium transition duration-300 hover:text-purple-500 focus:text-purple-500"
-              to="/signup"
-            >
-              Signup
-            </Link>
-          </li>
-          <li className="list-none">
-            <Link
               className="font-medium duration-300 font-semibotransition hover:text-purple-500 focus:text-purple-500"
               to="/contact"
             >
               Contact
             </Link>
           </li>
+          {isLogedIn ? (
+            <li className="list-none">
+              <Link
+                className="font-medium duration-300 font-semibotransition hover:text-purple-500 focus:text-purple-500"
+                to="/logout"
+              >
+                Logout
+              </Link>
+            </li>
+          ) : (
+            <>
+              <li className="list-none">
+                <Link
+                  className="font-medium transition duration-300 hover:text-purple-500 focus:text-purple-500"
+                  to="/Login"
+                >
+                  Login
+                </Link>
+              </li>
+              <li className="list-none">
+                <Link
+                  className="font-medium transition duration-300 hover:text-purple-500 focus:text-purple-500"
+                  to="/signup"
+                >
+                  Signup
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
