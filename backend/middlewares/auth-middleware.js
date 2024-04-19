@@ -9,9 +9,9 @@ const authMiddleware = async (req, res, next) => {
   }
 
   //   ASSUMING TOKEN IN THE FORMAT IS "bareer <token>" removing bareer from start
-  const jwtToken = token.replace("Bearer", "").trim();
 
   try {
+    const jwtToken = token.replace("Bearer", "").trim();
     const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY);
     const userData = await user
       .findOne({ email: isVerified.email })

@@ -3,9 +3,17 @@ import { IoLocationSharp } from "react-icons/io5";
 import { FaPhone } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useAuthContext } from "../store/auth";
 
 const ContactPage = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
+  const { userData } = useAuthContext();
+  console.log(userData);
+
+  if (userData) {
+    setValue("name", userData.username);
+    setValue("email", userData.email);
+  }
 
   const onSubmit = (data) => {
     console.log(data);
@@ -75,17 +83,6 @@ const ContactPage = () => {
               name="email"
               required
               {...register("email")}
-            />
-          </div>
-          {/* SUBJECT INPUT */}
-          <div>
-            <input
-              type="text"
-              className="w-full h-[50px] bg-[#ffffff1c] focus:bg-[#ffffff1c]  focus:outline-none px-[10px] text-white text-sm border-purple-500 focus:border-sky-500 mb-5"
-              placeholder="Subject"
-              name="subject"
-              required
-              {...register("subject")}
             />
           </div>
           {/* TEXTAREAs */}
