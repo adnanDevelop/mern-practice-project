@@ -4,7 +4,6 @@ import { useAuthContext } from "../store/auth";
 
 const Navbar = () => {
   const { isLogedIn } = useAuthContext();
-  console.log(isLogedIn);
 
   return (
     <header className="bg-white">
@@ -45,6 +44,7 @@ const Navbar = () => {
               Contact
             </Link>
           </li>
+          {/* PRIVATE AND PUBLIC ROUTES */}
           {isLogedIn ? (
             <li className="list-none">
               <Link

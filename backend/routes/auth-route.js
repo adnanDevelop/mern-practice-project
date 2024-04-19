@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const authConroller = require("../controller/auth-controller");
 // const signupValidation = require("../validators/auth-validator");
-const validation = require("../middlewares/validate-middleware");
 const authValidation = require("../validators/auth-validator");
+const validation = require("../middlewares/validate-middleware");
+const authMiddleWare = require("../middlewares/auth-middleware");
 
 router.route("/").get(authConroller.home);
 router
@@ -12,5 +13,6 @@ router
 router
   .route("/login")
   .post(validation(authValidation.loginValidation), authConroller.login);
+router.route("/user").get(authMiddleWare, authConroller.getUser);
 
 module.exports = router;

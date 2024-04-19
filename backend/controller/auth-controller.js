@@ -78,4 +78,14 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { home, register, login };
+// GET USER DATA
+const getUser = async (req, res) => {
+  try {
+    const data = req.user;
+    res.status(200).json({ message: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { home, register, login, getUser };
