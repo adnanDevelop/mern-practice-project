@@ -1,4 +1,5 @@
 const User = require("../models/user-model");
+const contactFormCollection = require("../models/contact-modal");
 
 /****** HOME ROUTE ********/
 const home = async (req, res) => {
@@ -88,4 +89,23 @@ const getUser = async (req, res) => {
   }
 };
 
-module.exports = { home, register, login, getUser };
+const contactForm = async (req, res) => {
+  try {
+    const { username, email, message } = req.body;
+
+    const storeData = await contactFormCollection.create({
+      username,
+      email,
+      message,
+    });
+
+    res.status(200).json({
+      message: "Form successfully submitted",
+    });
+    console.log(storeData);
+  } catch (error) {
+    res.status(500).json({ message: "Error while submitting contact data" });
+  }
+};
+
+module.exports = { home, register, login, getUser, contactForm };

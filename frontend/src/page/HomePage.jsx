@@ -1,6 +1,9 @@
 import React from "react";
+import { useAuthContext } from "../store/auth";
 
 const HomePage = () => {
+  const { userData } = useAuthContext();
+
   return (
     <main>
       {/* HERO SECTION */}
@@ -11,7 +14,8 @@ const HomePage = () => {
             World best digital solutions
           </span>
           <h1 className="text-[35px] font-semibold text-white mt-2">
-            <span className="">Welcome</span> to Adnan Tariq
+            <span className="">Welcome</span>{" "}
+            {userData.username ? userData.username : "Home Page"}
           </h1>
           <p className="mt-3 text-justify">
             Are you ready to take your business to the next level with

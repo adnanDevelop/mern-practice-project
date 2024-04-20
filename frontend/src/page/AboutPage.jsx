@@ -1,12 +1,14 @@
 import React from "react";
+import { useAuthContext } from "../store/auth";
 
 const AboutPage = () => {
+  const { userData } = useAuthContext();
   return (
     <main className="container mb-[40px] flex items-center justify-between mx-auto about_page">
       {/* CONTENT SECTION */}
       <section className="mt-[40px] max-w-[500px] ">
         <span className="relative inline-block text-xs before:absolute before:w-[50px] before:h-1 before:bg-purple-500 before:left-0 before:bottom-[-4px] ">
-          Welcome, Adnan Tariq
+          Welcome, {userData.username ? userData.username : ""}
         </span>
         <h1 className="text-[35px] font-semibold text-black mt-2">
           <span className="text-purple-500">Why</span> Choose Us?

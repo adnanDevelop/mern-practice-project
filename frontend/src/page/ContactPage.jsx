@@ -1,22 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { FaPhone } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useAuthContext } from "../store/auth";
+import { useNavigate } from "react-router-dom";
 
 const ContactPage = () => {
-  const { register, handleSubmit, setValue } = useForm();
-  const { userData } = useAuthContext();
-  console.log(userData);
+  const { register, handleSubmit, setValue, reset } = useForm();
+  const [isUser, setUser] = useState(true);
+  const navigate = useNavigate();
+  const { userData } = useAuthContext(); //GETTING USER DATA
 
-  if (userData) {
+  if (userData && isUser) {
     setValue("name", userData.username);
     setValue("email", userData.email);
+    setValue("message", "Message");
+    setUser(false);
   }
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const sentData = await fetch("http://localhost:4000/contactform", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      await sentData.json();
+      alert(
+        `${
+          data.username.charAt(0).toUpperCase() + data.username.slice(1)
+        } your form is successfully submitted`
+      );
+      reset();
+      navigate("/");
+    } catch (error) {
+      console.log("Error while submitting data", error);
+    }
   };
 
   return (
@@ -69,9 +92,9 @@ const ContactPage = () => {
               type="text"
               className="w-full h-[50px] bg-[#ffffff1c] focus:bg-[#ffffff1c]  focus:outline-none px-[10px] text-white text-sm border-purple-500 focus:border-sky-500 mb-5"
               placeholder="Name"
-              name="name"
+              name="username"
               required
-              {...register("name")}
+              {...register("username")}
             />
           </div>
           {/* EMAIL INPUT */}

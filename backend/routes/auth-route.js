@@ -14,5 +14,6 @@ router
   .route("/login")
   .post(validation(authValidation.loginValidation), authConroller.login);
 router.route("/user").get(authMiddleWare, authConroller.getUser);
+router.route("/contactform").post(authConroller.contactForm);
 
 module.exports = router;
