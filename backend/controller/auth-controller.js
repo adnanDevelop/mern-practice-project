@@ -1,5 +1,7 @@
 const User = require("../models/user-model");
 const contactFormCollection = require("../models/contact-modal");
+const servicesdatas = require("../models/service-modal");
+const data = require("../models/serviceData");
 
 /****** HOME ROUTE ********/
 const home = async (req, res) => {
@@ -79,7 +81,7 @@ const login = async (req, res, next) => {
   }
 };
 
-// GET USER DATA
+/******  GET USER DATA ROUTE ********/
 const getUser = async (req, res) => {
   try {
     const data = req.user;
@@ -89,6 +91,7 @@ const getUser = async (req, res) => {
   }
 };
 
+/******  STORING CONTACT FORM ROUTE ********/
 const contactForm = async (req, res) => {
   try {
     const { username, email, message } = req.body;
@@ -108,4 +111,18 @@ const contactForm = async (req, res) => {
   }
 };
 
-module.exports = { home, register, login, getUser, contactForm };
+/******  SERVICE PAGE DATA ROUTE ********/
+const serviceData = async (req, res) => {
+  try {
+    const addData = await servicesdatas.insertMany(data);
+    console.log(addData);
+
+    // Success message aur inserted data ko response mein bhejo
+    res.status(200).json({ data: addData });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" }); // Error handling
+  }
+};
+
+module.exports = { home, register, login, getUser, contactForm, serviceData };

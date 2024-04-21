@@ -10,7 +10,7 @@ const ContactPage = () => {
   const { register, handleSubmit, setValue, reset } = useForm();
   const [isUser, setUser] = useState(true);
   const navigate = useNavigate();
-  const { userData } = useAuthContext(); //GETTING USER DATA
+  const { userData } = useAuthContext(); // GETTING USER DATA
 
   if (userData && isUser) {
     setValue("name", userData.username);

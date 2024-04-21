@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("userToken"));
   const [userData, setUserData] = useState("");
+  const [serviceData, storeServiceData] = useState(null);
 
   // STORE USER TOKEN FUNCTION
   const storeToken = (userToken) =>
@@ -37,12 +38,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // SERVICE PAGE DATA
+  const fetchData = async () => {
+    const getData = await fetch("http://localhost:4000/service");
+    const response = await getData.json();
+    storeServiceData(response.data);
+  };
+
   useEffect(() => {
+    fetchData();
     getUserData();
   }, []);
   return (
     <AuthContext.Provider
-      value={{ storeToken, logoutUser, isLogedIn, userData }}
+      value={{ storeToken, logoutUser, isLogedIn, userData, serviceData }}
     >
       {children}
     </AuthContext.Provider>
