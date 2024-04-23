@@ -30,13 +30,15 @@ const ContactPage = () => {
       });
 
       await sentData.json();
-      alert(
-        `${
-          data.username.charAt(0).toUpperCase() + data.username.slice(1)
-        } your form is successfully submitted`
-      );
-      reset();
-      navigate("/");
+      if (sentData.ok) {
+        reset();
+        navigate("/");
+        alert(
+          `${
+            data.username.charAt(0).toUpperCase() + data.username.slice(1)
+          } your form is successfully submitted`
+        );
+      }
     } catch (error) {
       console.log("Error while submitting data", error);
     }

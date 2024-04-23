@@ -17,11 +17,17 @@ const LoginPage = () => {
         },
         body: JSON.stringify(data),
       });
-      const userData = await response.json();
-      storeToken(userData.token); //STORING USER TOKEN IN LOCAL STORAGE
 
-      reset();
-      navigate("/");
+      const userData = await response.json();
+      console.log(userData);
+
+      if (response.ok) {
+        navigate("/");
+        storeToken(userData.token); //Storing user token in local storage
+        reset();
+      } else {
+        alert(userData.message);
+      }
     } catch (error) {
       console.log("Error when login", error);
     }
@@ -42,7 +48,6 @@ const LoginPage = () => {
               className="w-full h-[50px] border focus:outline-none px-[10px] text-black text-sm border-purple-500 focus:border-sky-500 mb-5"
               placeholder="Enter your email address"
               name="email"
-              required
               {...register("email")}
             />
           </div>

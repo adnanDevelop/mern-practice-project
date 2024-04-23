@@ -7,11 +7,11 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState("");
   const [serviceData, storeServiceData] = useState(null);
 
-  // STORE USER TOKEN FUNCTION
+  // Sotre user token function
   const storeToken = (userToken) =>
     localStorage.setItem("userToken", userToken);
 
-  // LOGOUT USER FUNCTION
+  // Logout user function
   const logoutUser = () => {
     setToken("");
     return localStorage.removeItem("userToken");
@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
   const isLogedIn = token;
 
   // JWT AUTHENTICATION  TO GET CURRENTLY LOGGED IN USER DATA
-
   const getUserData = async () => {
     try {
       const request = await fetch("http://localhost:4000/user", {

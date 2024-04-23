@@ -3,14 +3,15 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../store/auth";
 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const SignupPage = () => {
   const navigate = useNavigate();
   const { storeToken } = useAuthContext();
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     try {
       const response = await fetch(`http://localhost:4000/register`, {
         method: "POST",
@@ -21,10 +22,16 @@ const SignupPage = () => {
       });
 
       const userData = await response.json();
+      console.log(userData);
 
-      reset();
-      navigate("/login");
-      storeToken(userData.token); //STORING USER TOKEN IN LOCAL STORAGE
+      if (response.ok) {
+        navigate("/login");
+        storeToken(userData.token); //Storing user token in localstorage
+        reset();
+        toast(userData.message);
+      } else {
+        toast(userData.message);
+      }
     } catch (error) {
       console.log("Error at registration page", error);
     }

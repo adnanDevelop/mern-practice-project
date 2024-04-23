@@ -76,7 +76,7 @@ const login = async (req, res, next) => {
       res.status(401).json("Invalid email or password");
     }
   } catch (error) {
-    // res.status(500).json("Internal server error");
+    res.status(500).json("Internal server error");
     next(error);
   }
 };
@@ -96,18 +96,20 @@ const contactForm = async (req, res) => {
   try {
     const { username, email, message } = req.body;
 
-    const storeData = await contactFormCollection.create({
-      username,
-      email,
-      message,
-    });
+    // const storeData = await contactFormCollection.create({
+    //   username,
+    //   email,
+    //   message,
+    // });
 
     res.status(200).json({
       message: "Form successfully submitted",
     });
-    console.log(storeData);
+    // console.log(storeData);
   } catch (error) {
     res.status(500).json({ message: "Error while submitting contact data" });
+    next(error);
+    console.log(error);
   }
 };
 
@@ -115,7 +117,6 @@ const contactForm = async (req, res) => {
 const serviceData = async (req, res) => {
   try {
     const addData = await servicesdatas.insertMany(data);
-    console.log(addData);
 
     // Success message aur inserted data ko response mein bhejo
     res.status(200).json({ data: addData });
