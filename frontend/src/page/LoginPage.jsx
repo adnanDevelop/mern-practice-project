@@ -2,6 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../store/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -25,8 +27,9 @@ const LoginPage = () => {
         navigate("/");
         storeToken(userData.token); //Storing user token in local storage
         reset();
+        toast(userData.message, { theme: "dark" });
       } else {
-        alert(userData.message);
+        toast(userData.message, { theme: "dark" });
       }
     } catch (error) {
       console.log("Error when login", error);

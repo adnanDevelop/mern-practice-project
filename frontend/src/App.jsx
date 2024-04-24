@@ -9,8 +9,11 @@ import Navbar from "./global/Navbar";
 import Footer from "./global/Footer";
 import ErrorPage from "./page/ErrorPage";
 import { LogoutPage } from "./page/LogoutPage";
+import { useAuthContext } from "./store/auth";
 
 function App() {
+  const { isLogedIn } = useAuthContext();
+
   return (
     <>
       <BrowserRouter>
@@ -19,11 +22,17 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/service" element={<ServicePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/logout" element={<LogoutPage />} />
           <Route path="*" element={<ErrorPage />} />
+          {isLogedIn ? (
+            " "
+          ) : (
+            <>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+            </>
+          )}
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -29,8 +29,9 @@ const ContactPage = () => {
         body: JSON.stringify(data),
       });
 
-      await sentData.json();
       if (sentData.ok) {
+        const userData = await sentData.json();
+        console.log(userData);
         reset();
         navigate("/");
         alert(

@@ -1,4 +1,5 @@
 const User = require("../models/user-model");
+const nodemailer = require("nodemailer");
 const contactFormCollection = require("../models/contact-modal");
 const servicesdatas = require("../models/service-modal");
 const data = require("../models/serviceData");
@@ -96,19 +97,44 @@ const contactForm = async (req, res) => {
   try {
     const { username, email, message } = req.body;
 
-    // const storeData = await contactFormCollection.create({
-    //   username,
-    //   email,
-    //   message,
-    // });
+    const storeData = await contactFormCollection.create({
+      username,
+      email,
+      message,
+    });
+
+    const transporter = nodemailer.createTransport({
+      service: "outlook",
+      auth: {
+        user: "gomarkho@outlook.com",
+        pass: "Lmkt@ptcl1234",
+      },
+    });
+
+    const mailOptions = {
+      from: "gomarkho@outlook.com",
+      to: "adnan6official@gmail.com",
+      subject: `Email from: ${username}`,
+      text: `Name: ${username}\nEmail: ${email}\nMessage: ${message}  `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error occurred:", error);
+        res.status(500).send("Error occurred while sending email.");
+      } else {
+        console.log("Email sent:", info.response);
+        res.status(200).send("Email sent successfully.");
+      }
+    });
 
     res.status(200).json({
       message: "Form successfully submitted",
     });
-    // console.log(storeData);
+    console.log(storeData);
   } catch (error) {
     res.status(500).json({ message: "Error while submitting contact data" });
-    next(error);
+    // next(error);
     console.log(error);
   }
 };

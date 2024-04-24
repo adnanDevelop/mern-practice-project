@@ -25,7 +25,7 @@ const signupValidation = z.object({
 // LOGIN VALIDATION
 const loginValidation = z.object({
   email: z
-    .string({ required_error: "Name is required" })
+    .string({ required_error: "Email is required" })
     .trim()
     .email({ message: "Invalid email address" }),
   password: z

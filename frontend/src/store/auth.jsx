@@ -7,9 +7,11 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState("");
   const [serviceData, storeServiceData] = useState(null);
 
-  // Sotre user token function
-  const storeToken = (userToken) =>
+  // Store user token function
+  const storeToken = (userToken) => {
+    setToken(userToken);
     localStorage.setItem("userToken", userToken);
+  };
 
   // Logout user function
   const logoutUser = () => {

@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <React.StrictMode>
       <App />
-      <ToastContainer />
+      <ToastContainer autoClose={2000}  />
     </React.StrictMode>
   </AuthProvider>
 );
